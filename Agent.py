@@ -12,10 +12,10 @@ from collections import deque
 
 
 # AGENT HYPERPARAMETERS
-LEARNING_RATE = 0.001
+LEARNING_RATE = 0.0005
 START_EPSILON = 1.0
 EPSILON_DECAY_FACTOR = 0.993
-DISCOUNT_FACTOR = 0.99
+DISCOUNT_FACTOR = 0.999
 MEMORY_SIZE = 10_000
 MIN_MEMORY_SIZE = 1_000
 BATCH_SIZE = 64
@@ -47,16 +47,18 @@ class DDQNAgent:
         model = Sequential()
 
         # Add layers
-        model.add(Dense(32, input_shape=self.state_shape))
+        model.add(Dense(64, input_shape=self.state_shape))
         model.add(Activation(relu))
         model.add(Dense(64))
+        model.add(Activation(relu))
+        model.add(Dense(32))
         model.add(Activation(relu))
         
         # Output layer
         model.add(Dense(self.action_size))
         model.add(Activation(linear))
 
-        model.compile(loss='mse', optimizer=Adam(learning_rate=LEARNING_RATE), metrics=['accuracy'])
+        model.compile(loss=tf.keras.losses.Huber(), optimizer=Adam(learning_rate=LEARNING_RATE), metrics=['accuracy'])
 
         return model
 
