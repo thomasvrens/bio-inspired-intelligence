@@ -10,7 +10,7 @@ from Agent import DDQNAgent
 tf.config.set_visible_devices([], 'GPU')
 
 # HYPERPARAMETERS
-EPISODES = 150
+EPISODES = 250
 SHOW_RENDER_EVERY = 20000
 SHOW_STATS_EVERY = 10
 
@@ -25,6 +25,7 @@ for episode in range(EPISODES):
     print(f'Episode: {episode}')
 
     cur_state, _ = env.reset()
+    step_count = 1
     
     done = False
     while not done:
@@ -38,11 +39,15 @@ for episode in range(EPISODES):
         agent.train()
 
         cur_state = new_state
+
+        step_count += 1
     
+    print(f'Steps: {step_count}')
+
     reward_list.append(episode_reward)
 
-    agent.decrease_epsilon()
     agent.increase_target_model_counter()
+    agent.decrease_epsilon()
 
     if episode % SHOW_STATS_EVERY == 0:
         avg_reward = np.average(reward_list[-SHOW_STATS_EVERY:])

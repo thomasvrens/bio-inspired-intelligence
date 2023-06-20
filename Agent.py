@@ -19,7 +19,7 @@ DISCOUNT_FACTOR = 0.99
 MEMORY_SIZE = 10_000
 MIN_MEMORY_SIZE = 1_000
 BATCH_SIZE = 64
-UPDATE_TARGET_MODEL_EVERY = 20
+UPDATE_TARGET_MODEL_EVERY = 5  # Episodes
 
 
 class DDQNAgent:
@@ -100,7 +100,7 @@ class DDQNAgent:
     
     def increase_target_model_counter(self):
         self.target_counter += 1
-        if self.target_counter > UPDATE_TARGET_MODEL_EVERY:
+        if self.target_counter >= UPDATE_TARGET_MODEL_EVERY:
             self.target_model.set_weights(self.model.get_weights())
             self.target_counter = 0
 
@@ -111,8 +111,7 @@ class DDQNAgent:
         save_string = f'models/{int(time.time())}.model'
         self.model.save(save_string)
     
-    def load_model(self, model_name):
-        load_string = f'models/{model_name}.model'
-        self.model = tf.keras.models.load_model(load_string) 
+    def load_model(self, model_path):
+        self.model = tf.keras.models.load_model(model_path) 
 
 
