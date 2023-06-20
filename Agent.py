@@ -107,10 +107,12 @@ class DDQNAgent:
     def decrease_epsilon(self):
         self.epsilon *= EPSILON_DECAY_FACTOR
     
-    def save_model(self, path):
-        self.model.save(path)
+    def save_model(self):
+        save_string = f'models/{int(time.time())}.model'
+        self.model.save(save_string)
     
-    def load_model(self, path):
-        self.model = tf.keras.models.load_model(path)  
+    def load_model(self, model_name):
+        load_string = f'models/{model_name}.model'
+        self.model = tf.keras.models.load_model(load_string) 
 
 

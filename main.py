@@ -50,6 +50,9 @@ for episode in range(EPISODES):
         min_reward = np.min(reward_list[-SHOW_STATS_EVERY:])
         print(f'Episode: {episode}, avg: {avg_reward}, max: {max_reward}, min: {min_reward}, epsilon: {agent.epsilon}')
 
+
+agent.save_model()
+
 window_size = 20
 reward_series = pd.Series(reward_list)
 rol_average = reward_series.rolling(window_size).mean()
