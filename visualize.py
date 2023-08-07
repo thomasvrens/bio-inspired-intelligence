@@ -1,4 +1,5 @@
 import gymnasium as gym
+import tensorflow as tf
 
 from Agent import DDQNAgent
 
@@ -6,14 +7,21 @@ env = gym.make('LunarLander-v2', render_mode='human')
 
 agent = DDQNAgent(env.observation_space.shape, env.action_space.n)
 
+
+
 # Load model and set epsilon to 0
-model_name = 'models/1687262992.model'
+model_name = 'models/1691408534.model'
 agent.load_model(model_name)
 agent.epsilon = 0
+
+# Disable Tensorflow logging for cleaner output
+tf.keras.utils.disable_interactive_logging()
 
 SHOW_EPISODES = 20
 
 for episode in range(SHOW_EPISODES):
+
+    episode_reward = 0
 
     print(f'Episode: {episode}')
 
@@ -24,3 +32,6 @@ for episode in range(SHOW_EPISODES):
         action = agent.act(cur_state)
         new_state, reward, terminated, truncated, info = env.step(action)
         done = terminated or truncated
+        episode_reward += reward
+    
+    print(f'Reward: {episode_reward}')
