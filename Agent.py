@@ -15,7 +15,7 @@ from collections import deque
 LEARNING_RATE = 0.0005
 START_EPSILON = 1.0
 EPSILON_DECAY_FACTOR = 0.995
-DISCOUNT_FACTOR = 0.999
+DISCOUNT_FACTOR = 0.99
 MAX_MEMORY_SIZE = 10_000
 MIN_MEMORY_SIZE = 1_000
 BATCH_SIZE = 64
@@ -79,7 +79,7 @@ class DDQNAgent:
         self.memory_index = (self.memory_index + 1) % MAX_MEMORY_SIZE
     
     def train(self):
-        if len(self.memory) < MIN_MEMORY_SIZE:
+        if self.actual_memory_size < MIN_MEMORY_SIZE:
             return
         
         indices = np.random.choice(self.actual_memory_size, BATCH_SIZE, replace=False)

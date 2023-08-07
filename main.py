@@ -20,6 +20,9 @@ EPISODES = 500
 SHOW_STATS_EVERY = 10
 EPISODE_TIME_WINDOW = 10
 TRAIN_EVERY = 4
+MAX_STEPS = 500
+START_EXTRA_PENALTY = 500
+EXTRA_PENALTY_FACTOR = 1.01
 
 env = gym.make('LunarLander-v2')
 
@@ -44,7 +47,7 @@ try:
             done = terminated or truncated
 
             episode_reward += reward
-
+            
             agent.add_memory((cur_state, action, reward, new_state, done))
             
             if step_count % TRAIN_EVERY == 0:
@@ -53,6 +56,8 @@ try:
             cur_state = new_state
 
             step_count += 1
+            if step_count > MAX_STEPS:
+                done = True
         
         end_time = time.time()
         episode_time = end_time - start_time
