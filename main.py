@@ -21,8 +21,6 @@ SHOW_STATS_EVERY = 10
 EPISODE_TIME_WINDOW = 10
 TRAIN_EVERY = 4
 MAX_STEPS = 500
-START_EXTRA_PENALTY = 500
-EXTRA_PENALTY_FACTOR = 1.01
 
 env = gym.make('LunarLander-v2')
 
@@ -75,7 +73,7 @@ try:
             avg_reward = np.average(reward_list[-SHOW_STATS_EVERY:])
             max_reward = np.max(reward_list[-SHOW_STATS_EVERY:])
             min_reward = np.min(reward_list[-SHOW_STATS_EVERY:])
-            print(f'\nEpisode: {episode}, avg: {avg_reward}, max: {max_reward}, min: {min_reward}, epsilon: {agent.epsilon}\n')
+            print(f'\nEpisode: {episode}, avg: {avg_reward:.0f}, max: {max_reward:.0f}, min: {min_reward:.0f}, epsilon: {agent.epsilon:.0f}\n')
 except KeyboardInterrupt:
     print('Interrupted by user')
     pass
