@@ -16,7 +16,7 @@ LEARNING_RATE = 0.0005
 START_EPSILON = 1.0
 EPSILON_DECAY_FACTOR = 0.995
 DISCOUNT_FACTOR = 0.999
-MEMORY_SIZE = 10_000
+MAX_MEMORY_SIZE = 10_000
 MIN_MEMORY_SIZE = 1_000
 BATCH_SIZE = 64
 UPDATE_TARGET_MODEL_EVERY = 5  # Episodes
@@ -36,7 +36,10 @@ class DDQNAgent:
         self.target_model = self.make_model()
         self.target_model.set_weights(self.model.get_weights())
 
-        self.memory = deque(maxlen=MEMORY_SIZE)
+        # Circular buffer for faster memory access
+        self.memory = [None] * MAX_MEMORY_SIZE
+        self.memory_index = 0
+        self.actual_memory_size = 0
 
         self.target_counter = 0
 
@@ -63,20 +66,24 @@ class DDQNAgent:
         return model
 
     def act(self, state):
-        if np.random.rand() <= self.epsilon:
+        if np.random.rand() < self.epsilon:
             return np.random.randint(self.action_size)
         else:
             state = np.reshape(state, [1, self.state_size])
             return np.argmax(self.model.predict(state)[0])
     
     def add_memory(self, step_data):
-        self.memory.append(step_data)
+        if self.actual_memory_size < MAX_MEMORY_SIZE:
+            self.actual_memory_size += 1
+        self.memory[self.memory_index] = step_data
+        self.memory_index = (self.memory_index + 1) % MAX_MEMORY_SIZE
     
     def train(self):
         if len(self.memory) < MIN_MEMORY_SIZE:
             return
         
-        batch = random.sample(self.memory, BATCH_SIZE)
+        indices = np.random.choice(self.actual_memory_size, BATCH_SIZE, replace=False)
+        batch = [self.memory[i] for i in indices]
 
         cur_states = np.array([step_data[0] for step_data in batch])
         cur_qs = self.model.predict(cur_states)

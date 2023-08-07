@@ -7,11 +7,10 @@ env = gym.make('LunarLander-v2', render_mode='human')
 
 agent = DDQNAgent(env.observation_space.shape, env.action_space.n)
 
-
-
 # Load model and set epsilon to 0
-model_name = 'models/1691408534.model'
+model_name = 'models/1691412722.model'
 agent.load_model(model_name)
+print(agent.model.summary())
 agent.epsilon = 0
 
 # Disable Tensorflow logging for cleaner output
@@ -33,5 +32,8 @@ for episode in range(SHOW_EPISODES):
         new_state, reward, terminated, truncated, info = env.step(action)
         done = terminated or truncated
         episode_reward += reward
+        cur_state = new_state
+        print(reward)
+
     
     print(f'Reward: {episode_reward}')
