@@ -66,6 +66,10 @@ try:
 
         reward_list.append(episode_reward)
 
+        # Bring back epsilon
+        if episode % agent.reset_epsilon_every == 0 and episode != 0:
+            agent.reset_epsilon()
+        
         agent.increase_target_model_counter()
         agent.decrease_epsilon()
 
@@ -73,7 +77,8 @@ try:
             avg_reward = np.average(reward_list[-SHOW_STATS_EVERY:])
             max_reward = np.max(reward_list[-SHOW_STATS_EVERY:])
             min_reward = np.min(reward_list[-SHOW_STATS_EVERY:])
-            print(f'\nEpisode: {episode}, avg: {avg_reward:.0f}, max: {max_reward:.0f}, min: {min_reward:.0f}, epsilon: {agent.epsilon:.0f}\n')
+            print(f'\nEpisode: {episode}, avg: {avg_reward:.0f}, max: {max_reward:.0f}, min: {min_reward:.0f}, epsilon: {agent.epsilon:.4f}\n')
+
 except KeyboardInterrupt:
     print('Interrupted by user')
     pass

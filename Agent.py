@@ -12,10 +12,12 @@ from collections import deque
 
 
 # AGENT HYPERPARAMETERS
-LEARNING_RATE = 0.0005
+LEARNING_RATE = 0.001
 START_EPSILON = 1.0
+RESET_EPSILON = 0.8
 EPSILON_DECAY_FACTOR = 0.995
 DISCOUNT_FACTOR = 0.9925
+RESET_EPSILON_EVERY = 1_000 # Episodes
 MAX_MEMORY_SIZE = 10_000
 MIN_MEMORY_SIZE = 1_000
 BATCH_SIZE = 64
@@ -44,7 +46,9 @@ class DDQNAgent:
         self.target_counter = 0
 
         self.epsilon = START_EPSILON
+        self.reset_epsilon_every = RESET_EPSILON_EVERY
 
+        self.save_str = f'LR_{LEARNING_RATE}_DF_{DISCOUNT_FACTOR}_ED_{EPSILON_DECAY_FACTOR}_RE_{RESET_EPSILON_EVERY}'
     
     def make_model(self):
         model = Sequential()
@@ -115,6 +119,9 @@ class DDQNAgent:
 
     def decrease_epsilon(self):
         self.epsilon *= EPSILON_DECAY_FACTOR
+
+    def reset_epsilon(self):
+        self.epsilon = RESET_EPSILON
     
     def save_model(self):
         save_string = f'models/{int(time.time())}.model'
