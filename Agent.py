@@ -1,6 +1,7 @@
 import random
 import time
 import pickle
+import os
 
 import numpy as np
 import tensorflow as tf
@@ -132,7 +133,10 @@ class DDQNAgent:
         self.model.save(save_string)
 
     def save_rewards(self, reward_list):
-        file_path = f'rewards/{self.save_str}/{int(time.time())}.pkl'
+        directory = f'rewards/{self.save_str}'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        file_path = f'rewards/{self.save_str}/{int(time.time())}.pickle'
         with open(file_path, 'wb') as f:
             pickle.dump(reward_list, f)
 
