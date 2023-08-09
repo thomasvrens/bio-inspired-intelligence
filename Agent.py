@@ -1,5 +1,6 @@
 import random
 import time
+import pickle
 
 import numpy as np
 import tensorflow as tf
@@ -126,6 +127,11 @@ class DDQNAgent:
     def save_model(self):
         save_string = f'models/{int(time.time())}.model'
         self.model.save(save_string)
+
+    def save_rewards(self, reward_list):
+        file_path = f'sims/{self.save_str}/{int(time.time())}.pkl'
+        with open(file_path, 'wb') as f:
+            pickle.dump(reward_list, f)
     
     def load_model(self, model_path):
         self.model = tf.keras.models.load_model(model_path)
