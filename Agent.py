@@ -17,12 +17,12 @@ from collections import deque
 LEARNING_RATE = 0.001
 START_EPSILON = 1.0
 RESET_EPSILON = 0.8
-EPSILON_DECAY_FACTOR = 0.995
-DISCOUNT_FACTOR = 0.9925
+EPSILON_DECAY_FACTOR = 0.99
+DISCOUNT_FACTOR = 0.99
 RESET_EPSILON_EVERY = 1_000 # Episodes
-MAX_MEMORY_SIZE = 10_000
+MAX_MEMORY_SIZE = 10_000 
 MIN_MEMORY_SIZE = 1_000
-BATCH_SIZE = 64
+BATCH_SIZE = 128
 UPDATE_TARGET_MODEL_EVERY = 5  # Episodes
 
 
@@ -127,9 +127,9 @@ class DDQNAgent:
     
     def save_model(self, solved, ep_number):
         if solved:
-            save_string = f'models/SOLVED_{self.save_str}/{int(time.time())}_EN_{ep_number}.model'
+            save_string = f'models/SOLVED_{self.save_str}/{int(time.time())}_EN_{ep_number}.keras'
         else:
-            save_string = f'models/{self.save_str}/{int(time.time())}_EN_{ep_number}.model'
+            save_string = f'models/{self.save_str}/{int(time.time())}_EN_{ep_number}.keras'
         self.model.save(save_string)
 
     def save_rewards(self, reward_list, ep_number):
@@ -141,7 +141,7 @@ class DDQNAgent:
             pickle.dump(reward_list, f)
 
     def save_solution(self, ep_number):
-        save_string = f'solutions/{self.save_str}/{int(time.time())}_EN_{ep_number}.model'
+        save_string = f'solutions/{self.save_str}/{int(time.time())}_EN_{ep_number}.keras'
         self.model.save(save_string)
     
     def load_model(self, model_path):

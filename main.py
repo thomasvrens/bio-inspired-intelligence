@@ -74,8 +74,8 @@ try:
         if episode_reward >= 200:
             agent.save_solution(episode)
 
-        # Break if average reward (10eps) is greater than 150
-        if np.average(reward_list[-10:]) >= 150:
+        # Break if average reward (10eps) is greater than 200
+        if np.average(reward_list[-10:]) >= 200:
             print(f'\nEnvironment solved in {episode} episodes!')
             solved = True
             break
@@ -92,8 +92,6 @@ try:
 except KeyboardInterrupt:
     print('Interrupted by user')
     pass
-
-print(episode)
 
 # save model
 agent.save_model(solved, episode)

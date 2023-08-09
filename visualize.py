@@ -8,7 +8,7 @@ env = gym.make('LunarLander-v2', render_mode='human')
 agent = DDQNAgent(env.observation_space.shape, env.action_space.n)
 
 # Load model and set epsilon to 0
-model_name = 'models/1691423099.model'
+model_name = 'solutions/LR_0.001_DF_0.99_ED_0.99_RE_1000/1691587424_EN_174.model'
 agent.load_model(model_name)
 agent.epsilon = 0
 
