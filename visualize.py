@@ -10,6 +10,7 @@ agent = DDQNAgent(env.observation_space.shape, env.action_space.n)
 # Load model and set epsilon to 0
 model_name = 'models/1691423099.model'
 agent.load_model(model_name)
+agent.epsilon = 0
 
 # Disable Tensorflow logging for cleaner output
 tf.keras.utils.disable_interactive_logging()
