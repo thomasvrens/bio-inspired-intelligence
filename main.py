@@ -1,5 +1,3 @@
-import os
-import contextlib
 import time
 
 import gymnasium as gym
@@ -27,6 +25,8 @@ env = gym.make('LunarLander-v2')
 agent = DDQNAgent(env.observation_space.shape, env.action_space.n)
 reward_list = []
 episode_times = []
+
+solved = False
 
 # If interupted early by user, model is still saved
 try:
@@ -69,6 +69,16 @@ try:
         # Bring back epsilon
         if episode % agent.reset_epsilon_every == 0 and episode != 0:
             agent.reset_epsilon()
+
+        # Save model if it solved the environment
+        if episode_reward >= 200:
+            agent.save_solution()
+
+        # Break if average reward (10eps) is greater than 150
+        if np.average(reward_list[-10:]) >= 150:
+            print(f'\nEnvironment solved in {episode} episodes!')
+            solved = True
+            break
         
         agent.increase_target_model_counter()
         agent.decrease_epsilon()
@@ -84,8 +94,9 @@ except KeyboardInterrupt:
     pass
 
 # save model
-agent.save_model()
-# TODO: save hyperparameters and learning curve
+agent.save_model(solved)
+# save reward list
+agent.save_rewards(reward_list)
 
 
 window_size = 20

@@ -124,14 +124,21 @@ class DDQNAgent:
     def reset_epsilon(self):
         self.epsilon = RESET_EPSILON
     
-    def save_model(self):
-        save_string = f'models/{int(time.time())}.model'
+    def save_model(self, solved):
+        if solved:
+            save_string = f'models/SOLVED_{self.save_str}/{int(time.time())}.model'
+        else:
+            save_string = f'models/{self.save_str}/{int(time.time())}.model'
         self.model.save(save_string)
 
     def save_rewards(self, reward_list):
-        file_path = f'sims/{self.save_str}/{int(time.time())}.pkl'
+        file_path = f'rewards/{self.save_str}/{int(time.time())}.pkl'
         with open(file_path, 'wb') as f:
             pickle.dump(reward_list, f)
+
+    def save_solution(self):
+        save_string = f'solutions/{self.save_str}/{int(time.time())}.model'
+        self.model.save(save_string)
     
     def load_model(self, model_path):
         self.model = tf.keras.models.load_model(model_path)
