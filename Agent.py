@@ -125,23 +125,23 @@ class DDQNAgent:
     def reset_epsilon(self):
         self.epsilon = RESET_EPSILON
     
-    def save_model(self, solved):
+    def save_model(self, solved, ep_number):
         if solved:
-            save_string = f'models/SOLVED_{self.save_str}/{int(time.time())}.model'
+            save_string = f'models/SOLVED_{self.save_str}/{int(time.time())}_EN_{ep_number}.model'
         else:
-            save_string = f'models/{self.save_str}/{int(time.time())}.model'
+            save_string = f'models/{self.save_str}/{int(time.time())}_EN_{ep_number}.model'
         self.model.save(save_string)
 
-    def save_rewards(self, reward_list):
+    def save_rewards(self, reward_list, ep_number):
         directory = f'rewards/{self.save_str}'
         if not os.path.exists(directory):
             os.makedirs(directory)
-        file_path = f'rewards/{self.save_str}/{int(time.time())}.pickle'
+        file_path = f'rewards/{self.save_str}/{int(time.time())}_EN_{ep_number}.pickle'
         with open(file_path, 'wb') as f:
             pickle.dump(reward_list, f)
 
-    def save_solution(self):
-        save_string = f'solutions/{self.save_str}/{int(time.time())}.model'
+    def save_solution(self, ep_number):
+        save_string = f'solutions/{self.save_str}/{int(time.time())}_EN_{ep_number}.model'
         self.model.save(save_string)
     
     def load_model(self, model_path):
