@@ -14,16 +14,18 @@ from collections import deque
 
 
 # AGENT HYPERPARAMETERS
-LEARNING_RATE = 0.001
 START_EPSILON = 1.0
 RESET_EPSILON = 0.8
-EPSILON_DECAY_FACTOR = 0.99
-DISCOUNT_FACTOR = 0.99
 RESET_EPSILON_EVERY = 1_000 # Episodes
 MAX_MEMORY_SIZE = 10_000 
 MIN_MEMORY_SIZE = 1_000
 BATCH_SIZE = 128
 UPDATE_TARGET_MODEL_EVERY = 5  # Episodes
+
+# Sensitivity analysis
+DISCOUNT_FACTOR = 0.9
+LEARNING_RATE = 0.001
+EPSILON_DECAY_FACTOR = 0.99
 
 
 class DDQNAgent:
@@ -145,7 +147,6 @@ class DDQNAgent:
         self.model.save(save_string)
     
     def load_model(self, model_path):
+        #self.model = None
         self.model = tf.keras.models.load_model(model_path)
-        self.target_model.set_weights(self.model.get_weights())
-
 
