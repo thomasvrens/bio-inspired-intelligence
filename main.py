@@ -25,6 +25,7 @@ env = gym.make('LunarLander-v2')
 agent = DDQNAgent(env.observation_space.shape, env.action_space.n)
 reward_list = []
 episode_times = []
+episode_steps = []
 
 solved = False
 
@@ -65,14 +66,15 @@ try:
         print(f'Average episode time ({EPISODE_TIME_WINDOW}eps): {avg_time:.1f} [s], ETA: {avg_time * (EPISODES - episode) / 60:.2f} [min]')
 
         reward_list.append(episode_reward)
+        episode_steps.append(step_count)
 
         # Bring back epsilon
         if episode % agent.reset_epsilon_every == 0 and episode != 0:
             agent.reset_epsilon()
 
         # Save model if it solved the environment
-        if episode_reward >= 200:
-            agent.save_solution(episode)
+        #if episode_reward >= 200:
+        #    agent.save_solution(episode)
 
         # Break if average reward (10eps) is greater than 200
         if np.average(reward_list[-10:]) >= 200:
@@ -97,6 +99,8 @@ except KeyboardInterrupt:
 agent.save_model(solved, episode)
 # save reward list
 agent.save_rewards(reward_list, episode)
+# save episode steps
+agent.save_episode_steps(episode_steps, episode)
 
 
 window_size = 20

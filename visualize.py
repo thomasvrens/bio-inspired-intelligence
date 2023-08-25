@@ -2,6 +2,7 @@ import gymnasium as gym
 import tensorflow as tf
 
 from Agent import DDQNAgent
+from keras.optimizers import Adam
 
 env = gym.make('LunarLander-v2', render_mode='human')
 

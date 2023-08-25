@@ -141,6 +141,14 @@ class DDQNAgent:
         file_path = f'rewards/{self.save_str}/{int(time.time())}_EN_{ep_number}.pickle'
         with open(file_path, 'wb') as f:
             pickle.dump(reward_list, f)
+    
+    def save_episode_steps(self, episode_steps, ep_number):
+        directory = f'episode_steps/{self.save_str}'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        file_path = f'episode_steps/{self.save_str}/{int(time.time())}_EN_{ep_number}.pickle'
+        with open(file_path, 'wb') as f:
+            pickle.dump(episode_steps, f)
 
     def save_solution(self, ep_number):
         save_string = f'solutions/{self.save_str}/{int(time.time())}_EN_{ep_number}.keras'
