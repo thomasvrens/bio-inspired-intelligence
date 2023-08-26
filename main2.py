@@ -1,3 +1,13 @@
+'''
+Workaround for model saving and loading not working properly
+Trains an agent and directly after runs vizualization and/or validation
+
+The first half is exactly the same as main.py
+Second half contains code for vizualization and validation
+
+Author: Thomas
+'''
+
 import time
 import pickle
 import os
@@ -103,6 +113,9 @@ agent.save_rewards(reward_list, episode)
 agent.save_episode_steps(episode_steps, episode)
 
 
+'''
+    Start of second half
+'''
 # Model saving still not working, putting validation in the same file
 val_runs = 100
 solutions = 0

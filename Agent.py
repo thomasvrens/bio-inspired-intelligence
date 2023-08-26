@@ -1,3 +1,11 @@
+'''
+Script containing the DQNAgent class.
+
+DQNAgent manages replay memory and training, also contains the neural network model.
+
+Author: Thomas
+'''
+
 import random
 import time
 import pickle
@@ -8,9 +16,8 @@ import tensorflow as tf
 
 from keras.models import Sequential
 from keras.layers import Dense, Activation
-from keras.activations import leaky_relu, relu, linear
+from keras.activations import relu, linear
 from keras.optimizers import Adam
-from collections import deque
 
 
 # AGENT HYPERPARAMETERS
@@ -42,7 +49,7 @@ class DQNAgent:
         self.target_model = self.make_model()
         self.target_model.set_weights(self.model.get_weights())
 
-        # Circular buffer for faster memory access
+        # Circular buffer
         self.memory = [None] * MAX_MEMORY_SIZE
         self.memory_index = 0
         self.actual_memory_size = 0

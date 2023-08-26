@@ -1,3 +1,12 @@
+'''
+OLD FILE
+Was used to visualize a trained agent, for some reason model saving and loading didn't work properly
+Does not show any learned behaviour
+Visualization to analyze learned behaviour was done in main2.py
+
+Author: Thomas
+'''
+
 import gymnasium as gym
 import tensorflow as tf
 

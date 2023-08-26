@@ -1,3 +1,9 @@
+'''
+    Script for plotting the sensitivity analysis.
+
+    Author: Thomas
+'''
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import pickle

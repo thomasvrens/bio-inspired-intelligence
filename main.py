@@ -1,3 +1,12 @@
+'''
+    Runs the main loop of the Deep Q-Learning algorithm
+    Running this script will train a DQNAgent on the LunarLander-v2 environment
+    The termnial will show the progress of the training
+    Training will terminate by plotting the episode rewards and saving the model
+
+    Author: Thomas
+'''
+
 import time
 
 import gymnasium as gym

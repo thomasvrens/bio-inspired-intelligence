@@ -1,3 +1,11 @@
+'''
+Script for performing statistical analysis.
+Plots some learning runs and calculates statistics used in the report.
+
+Author: Thomas
+(Written largely by Github Copilot)
+'''
+
 import os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -32,6 +40,7 @@ plt.xlabel('Episode')
 plt.ylabel('Average Reward (10 episodes)')
 
 # Show the plot
+plt.grid()
 plt.show()
 
 # Calculate the length statistics of all series
