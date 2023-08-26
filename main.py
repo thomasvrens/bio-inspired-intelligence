@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import tensorflow as tf
 
-from Agent import DDQNAgent
+from Agent import DQNAgent
 
 # Disable GPU
 tf.config.set_visible_devices([], 'GPU')
@@ -22,7 +22,7 @@ MAX_STEPS = 500
 
 env = gym.make('LunarLander-v2')
 
-agent = DDQNAgent(env.observation_space.shape, env.action_space.n)
+agent = DQNAgent(env.observation_space.shape, env.action_space.n)
 reward_list = []
 episode_times = []
 episode_steps = []
@@ -101,7 +101,6 @@ agent.save_model(solved, episode)
 agent.save_rewards(reward_list, episode)
 # save episode steps
 agent.save_episode_steps(episode_steps, episode)
-
 
 window_size = 20
 reward_series = pd.Series(reward_list)

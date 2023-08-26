@@ -1,4 +1,6 @@
 import time
+import pickle
+import os
 
 import gymnasium as gym
 import numpy as np
@@ -6,7 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import tensorflow as tf
 
-from Agent import DDQNAgent
+from Agent import DQNAgent
 
 # Disable GPU
 tf.config.set_visible_devices([], 'GPU')
@@ -22,7 +24,7 @@ MAX_STEPS = 500
 
 env = gym.make('LunarLander-v2')
 
-agent = DDQNAgent(env.observation_space.shape, env.action_space.n)
+agent = DQNAgent(env.observation_space.shape, env.action_space.n)
 reward_list = []
 episode_times = []
 episode_steps = []
@@ -101,9 +103,14 @@ agent.save_rewards(reward_list, episode)
 agent.save_episode_steps(episode_steps, episode)
 
 
-env = gym.make('LunarLander-v2', render_mode='human')
+# Model saving still not working, putting validation in the same file
+val_runs = 100
+solutions = 0
+reward_list = []
+
+env = gym.make('LunarLander-v2')
 agent.epsilon = 0
-for episode in range(20):
+for episode in range(val_runs):
     episode_reward = 0
 
     print(f'Episode: {episode}')
@@ -120,7 +127,15 @@ for episode in range(20):
 
     
     print(f'Reward: {episode_reward}')
+    reward_list.append(episode_reward)
+    if episode_reward >= 200:
+        solutions += 1
 
+print(f'Solved {solutions}/{val_runs} times')
+print(f'Average reward: {np.average(reward_list)}')
+print(f'Max reward: {np.max(reward_list)}')
+print(f'Min reward: {np.min(reward_list)}')
+print(f'Std reward: {np.std(reward_list)}')
 
 # save model
 agent.save_model(solved, episode)

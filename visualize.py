@@ -1,15 +1,15 @@
 import gymnasium as gym
 import tensorflow as tf
 
-from Agent import DDQNAgent
+from Agent import DQNAgent
 from keras.optimizers import Adam
 
 env = gym.make('LunarLander-v2', render_mode='human')
 
-agent = DDQNAgent(env.observation_space.shape, env.action_space.n)
+agent = DQNAgent(env.observation_space.shape, env.action_space.n)
 
 # Load model and set epsilon to 0
-model_name = 'models/SOLVED_LR_0.001_DF_0.99_ED_0.99_RE_1000/1691592948_EN_253.keras'
+model_name = 'models/SOLVED_LR_0.001_DF_0.99_ED_0.99_RE_1000/1692967006_EN_351.h5'
 agent.load_model(model_name)
 agent.epsilon = 0
 

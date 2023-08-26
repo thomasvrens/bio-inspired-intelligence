@@ -28,7 +28,7 @@ LEARNING_RATE = 0.001
 EPSILON_DECAY_FACTOR = 0.99
 
 
-class DDQNAgent:
+class DQNAgent:
     def __init__(self, state_shape, action_size):
         self.state_size = state_shape[0]
         self.action_size = action_size
@@ -129,9 +129,9 @@ class DDQNAgent:
     
     def save_model(self, solved, ep_number):
         if solved:
-            save_string = f'models/SOLVED_{self.save_str}/{int(time.time())}_EN_{ep_number}.keras'
+            save_string = f'models/SOLVED_{self.save_str}/{int(time.time())}_EN_{ep_number}.h5'
         else:
-            save_string = f'models/{self.save_str}/{int(time.time())}_EN_{ep_number}.keras'
+            save_string = f'models/{self.save_str}/{int(time.time())}_EN_{ep_number}.h5'
         self.model.save(save_string)
 
     def save_rewards(self, reward_list, ep_number):
@@ -155,6 +155,5 @@ class DDQNAgent:
         self.model.save(save_string)
     
     def load_model(self, model_path):
-        #self.model = None
         self.model = tf.keras.models.load_model(model_path)
 
