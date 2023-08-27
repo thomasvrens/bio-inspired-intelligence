@@ -3,7 +3,8 @@
     Running this script will train a DQNAgent on the LunarLander-v2 environment
     The termnial will show the progress of the training
     Training will terminate by plotting the episode rewards and saving the model
-
+    --> Model saving does not work properly, use main2.py for vizualization instead
+    
     Author: Thomas
 '''
 

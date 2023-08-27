@@ -3,7 +3,7 @@ Workaround for model saving and loading not working properly
 Trains an agent and directly after runs vizualization and/or validation
 
 The first half is exactly the same as main.py
-Second half contains code for vizualization and validation
+Second half contains code for vizualization or validation
 
 Author: Thomas
 '''
@@ -19,6 +19,8 @@ import pandas as pd
 import tensorflow as tf
 
 from Agent import DQNAgent
+
+mode = 'vizualization' # 'validation' or 'vizualization'
 
 # Disable GPU
 tf.config.set_visible_devices([], 'GPU')
@@ -41,7 +43,8 @@ episode_steps = []
 
 solved = False
 
-# If interupted early by user, model is still saved
+# If interupted early by user, vizualization/validation is still run
+# Allows for inspecting agent behaviour during training
 try:
     for episode in range(EPISODES):
         episode_reward = 0
@@ -117,43 +120,74 @@ agent.save_episode_steps(episode_steps, episode)
     Start of second half
 '''
 # Model saving still not working, putting validation in the same file
-val_runs = 100
-solutions = 0
-reward_list = []
 
-env = gym.make('LunarLander-v2')
-agent.epsilon = 0
-for episode in range(val_runs):
-    episode_reward = 0
+if mode == 'validation':
+    val_runs = 100
+    solutions = 0
+    reward_list = []
 
-    print(f'Episode: {episode}')
+    env = gym.make('LunarLander-v2')
+    agent.epsilon = 0
+    for episode in range(val_runs):
+        episode_reward = 0
 
-    cur_state, _ = env.reset()
+        print(f'Episode: {episode}')
+
+        cur_state, _ = env.reset()
+        
+        done = False
+        while not done:
+            action = agent.act(cur_state)
+            new_state, reward, terminated, truncated, info = env.step(action)
+            done = terminated or truncated
+            episode_reward += reward
+            cur_state = new_state
+
+        
+        print(f'Reward: {episode_reward}')
+        reward_list.append(episode_reward)
+        if episode_reward >= 200:
+            solutions += 1
+
+    print(f'Solved {solutions}/{val_runs} times')
+    print(f'Average reward: {np.average(reward_list)}')
+    print(f'Max reward: {np.max(reward_list)}')
+    print(f'Min reward: {np.min(reward_list)}')
+    print(f'Std reward: {np.std(reward_list)}')
+
+else:
+    input('Press enter to start vizualization...')
+
+    viz_runs = 30
+    reward_list = []
+
+    env = gym.make('LunarLander-v2', render_mode='human')
+    agent.epsilon = 0
+
+    for episode in range(viz_runs):
+
+        episode_reward = 0
+
+        print(f'Episode: {episode}')
+
+        cur_state, _ = env.reset()
+        
+        done = False
+        while not done:
+            action = agent.act(cur_state)
+            new_state, reward, terminated, truncated, info = env.step(action)
+            done = terminated or truncated
+            episode_reward += reward
+            cur_state = new_state
+
+        
+        print(f'Reward: {episode_reward}')
     
-    done = False
-    while not done:
-        action = agent.act(cur_state)
-        new_state, reward, terminated, truncated, info = env.step(action)
-        done = terminated or truncated
-        episode_reward += reward
-        cur_state = new_state
-
-    
-    print(f'Reward: {episode_reward}')
-    reward_list.append(episode_reward)
-    if episode_reward >= 200:
-        solutions += 1
-
-print(f'Solved {solutions}/{val_runs} times')
-print(f'Average reward: {np.average(reward_list)}')
-print(f'Max reward: {np.max(reward_list)}')
-print(f'Min reward: {np.min(reward_list)}')
-print(f'Std reward: {np.std(reward_list)}')
 
 # save model
 agent.save_model(solved, episode)
 
-window_size = 20
+window_size = 10
 reward_series = pd.Series(reward_list)
 rol_average = reward_series.rolling(window_size).mean()
 plt.plot(reward_list)
